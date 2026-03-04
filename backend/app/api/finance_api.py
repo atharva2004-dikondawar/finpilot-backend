@@ -52,6 +52,24 @@ def add_transaction(
     )
     return {"transaction_id": txn.id}
 
+@router.post("/seed-accounts")
+def seed_accounts(db: Session = Depends(get_db)):
+    from app.models.finance_models import Account
+    existing = db.query(Account).count()
+    if existing > 0:
+        return {"message": f"Accounts already exist ({existing} found)"}
+    
+    accounts = [
+        Account(id=1, name="Bank",           type="asset",   account_type="ASSET"),
+        Account(id=2, name="Salary Expense", type="expense",  account_type="EXPENSE"),
+        Account(id=3, name="Revenue",        type="revenue",  account_type="REVENUE"),
+        Account(id=4, name="Vendor Expense", type="expense",  account_type="EXPENSE"),
+        Account(id=6, name="Owner Equity",   type="equity",   account_type="EQUITY"),
+    ]
+    db.add_all(accounts)
+    db.commit()
+    return {"message": "✅ Accounts seeded successfully"}
+
 @router.get("/balance/{account_id}")
 def get_balance(account_id: int, db: Session = Depends(get_db)):
     balance = get_account_balance(db, account_id)
