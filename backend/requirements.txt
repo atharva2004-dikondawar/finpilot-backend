@@ -5,11 +5,11 @@ psycopg2-binary==2.9.11
 python-dotenv==1.2.1
 pydantic==2.12.5
 groq==0.37.1
-langchain==0.2.16
-langchain-core==1.2.17
-langchain-groq==1.1.2
-langchain-huggingface==0.0.3
-huggingface_hub==0.36.2
+langchain
+langchain-core
+langchain-groq
+langchain-huggingface
+huggingface_hub
 numpy==1.26.4
 pandas==3.0.1
 scikit-learn==1.8.0
