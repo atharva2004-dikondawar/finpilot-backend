@@ -111,21 +111,21 @@ def calculate_bankruptcy_risk(db: Session):
     )
 
     if existing:
-        existing.probability = probability
+        existing.probability = float(probability)
         existing.risk_level = level
-        existing.survival_months = runway
+        existing.survival_months = int(runway)
     else:
         db.add(BankruptcyRisk(
             month=current_month,
-            probability=probability,
+            probability=float(probability),
             risk_level=level,
-            survival_months=runway
+            survival_months=int(runway)
         ))
 
     db.commit()
 
     return {
-        "bankruptcy_probability": round(probability * 100, 2),
+        "bankruptcy_probability": round(float(probability) * 100, 2),
         "risk_level": level,
-        "survival_months": runway
+        "survival_months": int(runway)
     }
