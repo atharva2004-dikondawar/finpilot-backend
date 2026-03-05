@@ -116,7 +116,7 @@ def calculate_company_health(db: Session):
     ) - structural_penalty
 
     # Stability clamp (no instant 0 or 100)
-    health_score = max(10, min(95, health_score))
+    health_score = float(max(10, min(95, health_score)))
 
     # =========================
     # STATUS
@@ -144,13 +144,13 @@ def calculate_company_health(db: Session):
     )
 
     if existing:
-        existing.health_score = health_score
+        existing.health_score = float(health_score)
         existing.status = status
         existing.risk_level = risk_level
     else:
         db.add(CompanyHealth(
             month=current_month,
-            health_score=health_score,
+            health_score=float(health_score),
             status=status,
             risk_level=risk_level
         ))
