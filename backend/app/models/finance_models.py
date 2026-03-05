@@ -7,7 +7,8 @@ class Account(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    account_type = Column(String)   
+    type = Column(String)
+    account_type = Column(String)  
     
 class Transaction(Base):
     __tablename__ = "transactions"
