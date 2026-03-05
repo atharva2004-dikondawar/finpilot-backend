@@ -1,21 +1,15 @@
 from sqlalchemy.orm import Session
-from huggingface_hub import InferenceClient
+from groq import Groq
 import os
 
 from app.services.ai_cfo_v2 import run_ai_cfo_v2
 
-
-client = InferenceClient(
-    api_key=os.getenv("HUGGINGFACEHUB_API_TOKEN")
-)
-
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def generate_cfo_report(db: Session):
-
     data = run_ai_cfo_v2(db)
 
-    prompt = f"""
-You are an expert Chief Financial Officer.
+    prompt = f"""You are an expert Chief Financial Officer.
 
 Generate a professional executive financial report.
 
@@ -29,16 +23,23 @@ Recommended Actions: {data['recommended_actions']}
 Financial Analysis: {data['financial_analysis']}
 Insight Summary: {data['insight_summary']}
 
-Write:
-1. Executive Summary
-2. Financial Risk Analysis
-3. Strategic Recommendations
-4. Financial Outlook
+Write exactly in this format:
+1. Executive Summary:
+[content]
+
+2. Financial Risk Analysis:
+[content]
+
+3. Strategic Recommendations:
+[content]
+
+4. Financial Outlook:
+[content]
 """
 
     try:
         completion = client.chat.completions.create(
-            model="mistralai/Mistral-7B-Instruct-v0.2",
+            model="llama3-8b-8192",
             messages=[{"role": "user", "content": prompt}],
             max_tokens=700,
             temperature=0.4
